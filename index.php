@@ -9,7 +9,7 @@ require 'partials/header.php';
 ?>
 <section class="hero">
   <div class="hero-copy">
-    <div class="eyebrow"><span class="eyebrow-dot"></span> LAYANAN ADMINISTRASI DIGITAL</div>
+    <div class="eyebrow"><span class="eyebrow-dot"></span> LAYANAN ADMINISTRASI DIGITAL KAMPUS</div>
     <h1>Urus surat kampus,<br><span>lebih mudah.</span></h1>
     <p>Ajukan surat secara online, pantau status permohonan, dan dapatkan informasi proses pengajuan tanpa harus berulang kali datang ke bagian administrasi kampus.</p>
     <div class="hero-actions">
