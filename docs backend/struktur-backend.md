@@ -123,10 +123,3 @@ Operasi database menggunakan PDO dan prepared statement pada proses autentikasi,
 - Mahasiswa dibatasi pada data pengajuan miliknya.
 - Unduhan PDF hanya tersedia untuk status `Selesai`.
 
-## 9. Catatan Pengembangan
-
-- Pastikan konfigurasi database pada `config.php` sesuai lingkungan lokal/server sebelum menjalankan aplikasi.
-- Dokumentasi ini tidak mengklaim bahwa pengujian otomatis atau pengujian integrasi telah dijalankan.
-- Pada ZIP yang diperiksa, branch lokal yang tersedia adalah `teks`, `main`, dan `develop`; branch `feature/backend` belum ada. Buat/pilih branch tersebut sebelum commit tugas sesuai panduan tim.
-- Setelah perubahan dokumentasi, periksa `git status`, lalu commit dengan pesan: `docs: add backend documentation`.
-
