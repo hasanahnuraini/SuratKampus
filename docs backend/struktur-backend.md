@@ -122,3 +122,4 @@ Operasi database menggunakan PDO dan prepared statement pada proses autentikasi,
 - Akses halaman dilindungi dengan pemeriksaan login dan role.
 - Mahasiswa dibatasi pada data pengajuan miliknya.
 - Unduhan PDF hanya tersedia untuk status `Selesai`.
+
