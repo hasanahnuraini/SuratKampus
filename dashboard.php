@@ -27,7 +27,24 @@ require 'partials/header.php';
     <div class="empty-state"><div class="empty-icon">▤</div><h3>Belum ada pengajuan</h3><p>Permohonan surat yang Anda buat akan tampil di sini.</p><a class="btn btn-primary" href="ajukan.php">Ajukan surat pertama</a></div>
   <?php else: ?>
   <div class="table-wrap"><table><thead><tr><th>No. Pengajuan</th><th>Jenis surat</th><th>Tanggal</th><th>Status</th><th>Catatan admin</th><th>Tindakan / Dokumen</th></tr></thead><tbody>
-  <?php foreach ($applications as $a): ?><tr><td><strong><?= e($a['application_code']) ?></strong></td><td><?= e($a['letter_type']) ?></td><td><?= e(date('d/m/Y', strtotime($a['created_at']))) ?></td><td><span class="status-pill <?= $a['status'] === 'Selesai' ? 'status-selesai' : ($a['status'] === 'Ditolak' ? 'status-ditolak' : ($a['status'] === 'Diproses' ? 'status-proses' : 'status-menunggu')) ?>"><?= e($a['status']) ?></span></td><td><?= e($a['staff_note'] ?: 'Belum ada catatan') ?></td><td><?php if ($a['status'] === 'Diproses'): ?><a class="btn btn-primary btn-small" href="edit_pengajuan.php?id=<?= (int)$a['id'] ?>">Edit / Lengkapi Data</a><div class="table-sub">Perbaiki data sesuai catatan admin</div><?php elseif ($a['status'] === 'Selesai'): ?><a class="btn btn-primary btn-small" href="surat_pdf.php?id=<?= (int)$a['id'] ?>">Unduh PDF</a><?php elseif ($a['status'] === 'Menunggu'): ?><span class="table-sub">Menunggu pemeriksaan admin</span><?php else: ?><span class="table-sub">Hubungi admin jika perlu perubahan</span><?php endif; ?></td></tr><?php endforeach; ?>
+  <?php foreach ($applications as $a): ?><tr><td><strong><?= e($a['application_code']) ?></strong></td><td><?= e($a['letter_type']) ?></td><td><?= e(date('d/m/Y', strtotime($a['created_at']))) ?></td><td><span class="status-pill <?= $a['status'] === 'Selesai' ? 'status-selesai' : ($a['status'] === 'Ditolak' ? 'status-ditolak' : ($a['status'] === 'Diproses' ? 'status-proses' : 'status-menunggu')) ?>"><?= e($a['status']) ?></span></td><td><?= e($a['staff_note'] ?: 'Belum ada catatan') ?></td><td><?php if ($a['status'] === 'Diproses'): ?><a class="btn btn-primary btn-small" href="edit_pengajuan.php?id=<?= (int)$a['id'] ?>">Edit / Lengkapi Data</a><div class="table-sub">Perbaiki data sesuai catatan admin</div><?php elseif ($a['status'] === 'Selesai'): ?><a class="btn btn-primary btn-small" href="surat_pdf.php?id=<?= (int)$a['id'] ?>">Unduh PDF</a><?php elseif ($a['status'] === 'Menunggu'): ?>
+    <span class="table-sub">Menunggu pemeriksaan admin</span>
+
+    <form action="hapus_pengajuan.php" method="POST"
+          onsubmit="return confirm('Yakin ingin menghapus pengajuan ini?')"
+          style="margin-top: 8px;">
+
+        <input type="hidden" name="csrf_token"
+              value="<?= e(csrf_token()) ?>">
+
+        <input type="hidden" name="application_id"
+              value="<?= (int)$a['id'] ?>">
+
+        <button type="submit" class="btn btn-small"
+                style="background:#dc3545;color:white;">
+            Hapus Pengajuan
+        </button>
+    </form><?php else: ?><span class="table-sub">Hubungi admin jika perlu perubahan</span><?php endif; ?></td></tr><?php endforeach; ?>
   </tbody></table></div>
   <?php endif; ?>
 </section>
