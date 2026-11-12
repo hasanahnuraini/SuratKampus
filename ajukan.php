@@ -73,10 +73,10 @@ require 'partials/header.php';
 ?>
 <section class="page-heading"><div><div class="eyebrow">FORMULIR ONLINE</div><h1>Ajukan surat baru</h1><p>Lengkapi data kegiatan agar admin kampus dapat memproses permohonan Anda.</p></div><a class="btn btn-outline" href="dashboard.php">← Kembali</a></section>
 <div class="form-page-grid">
-  <section class="panel form-panel"><div class="panel-heading"><div><h2>Data permohonan</h2><p>Identitas mahasiswa diambil otomatis dari profil akun.</p></div><span class="required-note">* Wajib diisi</span></div>
-  <?php if ($errors): ?><div class="alert alert-error"><ul><?php foreach ($errors as $error): ?><li><?= e($error) ?></li><?php endforeach; ?></ul></div><?php endif; ?>
-  <div class="identity-box"><div class="identity-avatar"><?= e(strtoupper(substr($user['nama'], 0, 1))) ?></div><div><strong><?= e($user['nama']) ?></strong><span>NIM: <?= e($user['nim']) ?></span><small><?= e($user['prodi']) ?></small></div></div>
-  <form method="post" class="form-stack" id="application-form">
+    <section class="panel form-panel"><div class="panel-heading"><div><h2>Data permohonan</h2><p>Identitas mahasiswa diambil otomatis dari profil akun.</p></div><span class="required-note">* Wajib diisi</span></div>
+    <?php if ($errors): ?><div class="alert alert-error"><ul><?php foreach ($errors as $error): ?><li><?= e($error) ?></li><?php endforeach; ?></ul></div><?php endif; ?>
+    <div class="identity-box"><div class="identity-avatar"><?= e(strtoupper(substr($user['nama'], 0, 1))) ?></div><div><strong><?= e($user['nama']) ?></strong><span>NIM: <?= e($user['nim']) ?></span><small><?= e($user['prodi']) ?></small></div></div>
+    <form method="post" class="form-stack" id="application-form">
     <input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>">
     <label>Jenis surat <span class="required">*</span><select id="letter_type" name="letter_type" required><option value="">Pilih jenis surat</option><?php foreach ($types as $type): ?><option value="<?= e($type) ?>" <?= $fields['letter_type'] === $type ? 'selected' : '' ?>><?= e($type) ?></option><?php endforeach; ?></select></label>
     <div class="form-section-title">Informasi instansi dan pembimbing</div>
@@ -87,26 +87,26 @@ require 'partials/header.php';
     <div id="research-group"><label>Judul skripsi / topik penelitian <span class="required">*</span><textarea name="research_title" rows="3" maxlength="500" placeholder="Masukkan judul skripsi atau topik penelitian"><?= e($fields['research_title']) ?></textarea></label></div>
     <div id="field-group"><label>Bidang / posisi kegiatan <input name="activity_field" maxlength="190" value="<?= e($fields['activity_field']) ?>" placeholder="Contoh: Pengembangan perangkat lunak, RPL, administrasi"></label></div>
     <div class="form-two-columns">
-      <label>Tanggal mulai kegiatan <input type="date" name="activity_start" value="<?= e($fields['activity_start']) ?>"></label>
-      <label>Tanggal selesai kegiatan <input type="date" name="activity_end" value="<?= e($fields['activity_end']) ?>"></label>
+        <label>Tanggal mulai kegiatan <input type="date" name="activity_start" value="<?= e($fields['activity_start']) ?>"></label>
+        <label>Tanggal selesai kegiatan <input type="date" name="activity_end" value="<?= e($fields['activity_end']) ?>"></label>
     </div>
     <label>Tujuan dan keterangan kegiatan <span class="required">*</span><textarea name="description" rows="5" maxlength="1500" placeholder="Jelaskan tujuan observasi, mini riset, magang, atau PKLI serta informasi pendukung lainnya..." required><?= e($fields['description']) ?></textarea><small>Minimal 10 karakter, maksimal 1.500 karakter.</small></label>
     <div class="form-section-title">Data anggota kelompok (opsional)</div>
     <p class="form-help">Data mahasiswa pengaju di atas sudah otomatis tercantum pada surat. Tambahkan anggota lain jika pengajuan dilakukan berkelompok.</p>
     <div id="members-container">
-      <?php foreach ($members as $member): ?>
-      <div class="member-row form-two-columns">
+        <?php foreach ($members as $member): ?>
+        <div class="member-row form-two-columns">
         <label>Nama anggota <input name="member_nama[]" maxlength="120" value="<?= e($member['nama']) ?>" placeholder="Nama lengkap"></label>
         <label>NIM anggota <input name="member_nim[]" maxlength="30" value="<?= e($member['nim']) ?>" placeholder="NIM"></label>
         <label>Program studi <input name="member_prodi[]" maxlength="190" value="<?= e($member['prodi']) ?>" placeholder="Program studi"></label>
         <button type="button" class="btn btn-outline remove-member">Hapus anggota</button>
-      </div>
-      <?php endforeach; ?>
+        </div>
+        <?php endforeach; ?>
     </div>
     <button type="button" class="btn btn-outline" id="add-member">+ Tambah Anggota</button>
     <div class="form-actions"><a href="dashboard.php" class="btn btn-outline">Batal</a><button type="submit" class="btn btn-primary">Kirim pengajuan</button></div>
-  </form></section>
-  <aside class="info-card"><h3>Sebelum mengirim</h3><p>Pastikan seluruh data sudah benar. Admin kampus akan memeriksa permohonan sebelum statusnya dinyatakan selesai.</p><ul><li>Periksa kembali NIM dan program studi.</li><li>Isi nama instansi dan dosen pembimbing dengan benar.</li><li>Isi mata kuliah atau judul skripsi sesuai jenis surat.</li><li>PDF dapat diunduh setelah status pengajuan selesai.</li></ul></aside>
+    </form></section>
+    <aside class="info-card"><h3>Sebelum mengirim</h3><p>Pastikan seluruh data sudah benar. Admin kampus akan memeriksa permohonan sebelum statusnya dinyatakan selesai.</p><ul><li>Periksa kembali NIM dan program studi.</li><li>Isi nama instansi dan dosen pembimbing dengan benar.</li><li>Isi mata kuliah atau judul skripsi sesuai jenis surat.</li><li>PDF dapat diunduh setelah status pengajuan selesai.</li></ul></aside>
 </div>
 <script>
 (function(){const type=document.getElementById('letter_type');const course=document.getElementById('course-group');const research=document.getElementById('research-group');const field=document.getElementById('field-group');function update(){const v=type.value;const isCourse=v.includes('Mata Kuliah');const isThesis=v.includes('Skripsi');course.hidden=!isCourse;research.hidden=!(isThesis||isCourse);field.hidden=!(v.includes('Magang Mandiri')||v.includes('PKLI'));course.querySelector('input').required=isCourse;research.querySelector('textarea').required=isThesis;}type.addEventListener('change',update);update();
@@ -115,10 +115,10 @@ const add=document.getElementById('add-member');
 function bindRemove(btn){btn.addEventListener('click',()=>btn.closest('.member-row').remove());}
 container.querySelectorAll('.remove-member').forEach(bindRemove);
 add.addEventListener('click',()=>{
- if(container.querySelectorAll('.member-row').length>=20){alert('Maksimal 20 anggota tambahan.');return;}
- const row=document.createElement('div');row.className='member-row form-two-columns';
- row.innerHTML='<label>Nama anggota <input name="member_nama[]" maxlength="120" placeholder="Nama lengkap"></label><label>NIM anggota <input name="member_nim[]" maxlength="30" placeholder="NIM"></label><label>Program studi <input name="member_prodi[]" maxlength="190" placeholder="Program studi"></label><button type="button" class="btn btn-outline remove-member">Hapus anggota</button>';
- container.appendChild(row);bindRemove(row.querySelector('.remove-member'));
+    if(container.querySelectorAll('.member-row').length>=20){alert('Maksimal 20 anggota tambahan.');return;}
+    const row=document.createElement('div');row.className='member-row form-two-columns';
+    row.innerHTML='<label>Nama anggota <input name="member_nama[]" maxlength="120" placeholder="Nama lengkap"></label><label>NIM anggota <input name="member_nim[]" maxlength="30" placeholder="NIM"></label><label>Program studi <input name="member_prodi[]" maxlength="190" placeholder="Program studi"></label><button type="button" class="btn btn-outline remove-member">Hapus anggota</button>';
+    container.appendChild(row);bindRemove(row.querySelector('.remove-member'));
 });})();
 </script>
 <?php require 'partials/footer.php'; ?>

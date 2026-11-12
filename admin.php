@@ -32,9 +32,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Pastikan pengajuan memang milik mahasiswa dari prodi admin.
         $check = $pdo->prepare(
             'SELECT a.id
-             FROM applications a
-             JOIN users u ON a.user_id = u.id
-             WHERE a.id = ? AND u.prodi = ?'
+                FROM applications a
+                JOIN users u ON a.user_id = u.id
+                WHERE a.id = ? AND u.prodi = ?'
         );
         $check->execute([$id, $adminProdi]);
 
@@ -46,11 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Perbarui hanya pengajuan dari prodi admin yang login.
         $stmt = $pdo->prepare(
             'UPDATE applications a
-             JOIN users u ON a.user_id = u.id
-             SET a.status = ?,
-                 a.staff_note = ?,
-                 a.updated_at = CURRENT_TIMESTAMP
-             WHERE a.id = ? AND u.prodi = ?'
+                JOIN users u ON a.user_id = u.id
+                SET a.status = ?,
+                    a.staff_note = ?,
+                    a.updated_at = CURRENT_TIMESTAMP
+                WHERE a.id = ? AND u.prodi = ?'
         );
 
         $stmt->execute([$status, $note, $id, $adminProdi]);
@@ -92,9 +92,9 @@ $counts = [];
 foreach ($validStatuses as $s) {
     $stmt = $pdo->prepare(
         'SELECT COUNT(*)
-         FROM applications a
-         JOIN users u ON a.user_id = u.id
-         WHERE a.status = ? AND u.prodi = ?'
+            FROM applications a
+            JOIN users u ON a.user_id = u.id
+            WHERE a.status = ? AND u.prodi = ?'
     );
 
     $stmt->execute([$s, $adminProdi]);
@@ -109,9 +109,9 @@ require 'partials/header.php';
     Prodi: <strong><?= e($_SESSION['user']['prodi']) ?></strong>
 </p></div><?php if (($_SESSION['user']['role'] ?? '') === 'admin'): ?><a class="btn btn-primary" href="kelola_admin.php">+ Tambah Admin / Petugas</a><?php endif; ?></section>
 <div class="stats-grid admin-stats">
-  <article class="stat-card"><div class="stat-icon stat-orange">◷</div><span>Menunggu</span><strong><?= $counts['Menunggu'] ?></strong><small>Perlu diperiksa</small></article>
-  <article class="stat-card"><div class="stat-icon stat-blue">↻</div><span>Diproses</span><strong><?= $counts['Diproses'] ?></strong><small>Sedang ditangani</small></article>
-  <article class="stat-card"><div class="stat-icon stat-green">✓</div><span>Selesai</span><strong><?= $counts['Selesai'] ?></strong><small>Telah diselesaikan</small></article>
+    <article class="stat-card"><div class="stat-icon stat-orange">◷</div><span>Menunggu</span><strong><?= $counts['Menunggu'] ?></strong><small>Perlu diperiksa</small></article>
+    <article class="stat-card"><div class="stat-icon stat-blue">↻</div><span>Diproses</span><strong><?= $counts['Diproses'] ?></strong><small>Sedang ditangani</small></article>
+    <article class="stat-card"><div class="stat-icon stat-green">✓</div><span>Selesai</span><strong><?= $counts['Selesai'] ?></strong><small>Telah diselesaikan</small></article>
 </div>
 <section class="panel"><div class="panel-heading"><div><h2>Daftar permohonan mahasiswa</h2><p>Gunakan filter untuk memusatkan perhatian pada status tertentu.</p></div><form method="get" class="filter-form"><select name="status" aria-label="Filter status"><option value="">Semua status</option><?php foreach ($validStatuses as $s): ?><option value="<?= e($s) ?>" <?= $filter === $s ? 'selected' : '' ?>><?= e($s) ?></option><?php endforeach; ?></select><button class="btn btn-outline btn-small" type="submit">Filter</button></form></div>
 <?php if (!$applications): ?><div class="empty-state"><div class="empty-icon">✓</div><h3>Belum ada permohonan</h3><p>Pengajuan mahasiswa akan ditampilkan di sini.</p></div><?php else: ?>
@@ -126,7 +126,12 @@ require 'partials/header.php';
 <?php if (!empty($a['activity_field'])): ?><div class="table-sub"><strong>Bidang:</strong> <?= e($a['activity_field']) ?></div><?php endif; ?>
 <?php if (!empty($a['activity_start']) || !empty($a['activity_end'])): ?><div class="table-sub"><strong>Periode:</strong> <?= e($a['activity_start'] ?: '-') ?> s.d. <?= e($a['activity_end'] ?: '-') ?></div><?php endif; ?>
 <div class="detail-text"><?= e($a['description']) ?></div></td>
-<td><span class="status-pill <?= $a['status'] === 'Selesai' ? 'status-selesai' : ($a['status'] === 'Ditolak' ? 'status-ditolak' : ($a['status'] === 'Diproses' ? 'status-proses' : 'status-menunggu')) ?>"><?= e($a['status']) ?></span><div class="table-sub"><?= e($a['staff_note'] ?: 'Belum ada catatan') ?></div><?php if ($a['status'] === 'Selesai'): ?><a class="btn btn-outline btn-small" href="surat_pdf.php?id=<?= (int)$a['id'] ?>">Lihat PDF</a><?php endif; ?></td>
+<td><span class="status-pill <?= $a['status'] === 'Selesai' ? 'status-selesai' : ($a['status'] === 'Ditolak' ? 'status-ditolak' : ($a['status'] === 'Diproses' ? 'status-proses' : 'status-menunggu')) ?>"><?= e($a['status']) ?></span><div class="table-sub"><?= e($a['staff_note'] ?: 'Belum ada catatan') ?></div><a class="btn btn-outline btn-small"
+    href="surat_pdf.php?id=<?= (int)$a['id'] ?>"
+    target="_blank"
+    rel="noopener">
+    Preview Surat
+</a></td>
 <td><form method="post" class="update-form"><input type="hidden" name="csrf_token" value="<?= e(csrf_token()) ?>"><input type="hidden" name="application_id" value="<?= (int)$a['id'] ?>"><label class="sr-only" for="status-<?= (int)$a['id'] ?>">Status baru</label><select id="status-<?= (int)$a['id'] ?>" name="status"><?php foreach ($validStatuses as $s): ?><option value="<?= e($s) ?>" <?= $a['status'] === $s ? 'selected' : '' ?>><?= e($s) ?></option><?php endforeach; ?></select><input name="staff_note" maxlength="500" value="<?= e($a['staff_note']) ?>" placeholder="Catatan untuk mahasiswa"><button type="submit" class="btn btn-primary btn-small">Simpan</button></form></td>
 </tr><?php endforeach; ?>
 </tbody></table></div><?php endif; ?></section>
