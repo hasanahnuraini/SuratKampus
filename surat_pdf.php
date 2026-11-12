@@ -14,8 +14,11 @@ if (!is_staff_role($user['role'] ?? '')) {
 }
 $stmt = $pdo->prepare($sql); $stmt->execute($params); $a = $stmt->fetch();
 if (!$a) { http_response_code(404); exit('Pengajuan tidak ditemukan atau bukan milik akun ini.'); }
-if ($a['status'] !== 'Selesai') { http_response_code(403); exit('Surat PDF hanya dapat diunduh setelah pengajuan berstatus Selesai.'); }
-$memberStmt = $pdo->prepare('SELECT nama, nim, prodi FROM application_members WHERE application_id = ? ORDER BY id ASC');
+$isStaff = is_staff_role($user['role'] ?? '');
+if (!$isStaff && $a['status'] !== 'Selesai') {
+    http_response_code(403);
+    exit('Surat PDF hanya dapat diunduh setelah pengajuan berstatus Selesai.');
+}$memberStmt = $pdo->prepare('SELECT nama, nim, prodi FROM application_members WHERE application_id = ? ORDER BY id ASC');
 $memberStmt->execute([$id]);
 $groupMembers = $memberStmt->fetchAll();
 
@@ -30,7 +33,12 @@ if (!is_file($logoPath) || filesize($logoPath) === 0) {
 $pdf = surat_build($a, $groupMembers, $logoPath);
 
 header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="Surat-' . preg_replace('/[^A-Za-z0-9_-]/', '-', (string)$a['application_code']) . '.pdf"');
-header('Content-Length: ' . strlen($pdf));
+$disposition = $isStaff ? 'inline' : 'attachment';
+header(
+    'Content-Disposition: ' . $disposition .
+    '; filename="Surat-' .
+    preg_replace('/[^A-Za-z0-9_-]/', '-', (string)$a['application_code']) .
+    '.pdf"'
+);header('Content-Length: ' . strlen($pdf));
 
 echo $pdf;
