@@ -34,15 +34,15 @@ Dokumen ini menjelaskan fungsi utama yang tersedia pada aplikasi SuratKampus ber
 - Memperbarui data pengajuan yang sama dan mengembalikan status menjadi `Menunggu`.
 
 ### 2.6 Pengelolaan Pengajuan oleh Staf — `admin.php`
-- Menampilkan daftar pengajuan untuk admin dan petugas.
+- Menampilkan daftar pengajuan untuk admin.
 - Menyediakan filter berdasarkan status.
-- Membatasi daftar pengajuan petugas berdasarkan program studi.
+- Membatasi daftar pengajuan admin berdasarkan program studi.
 - Memungkinkan staf memperbarui status dan menambahkan catatan untuk mahasiswa.
 
 ### 2.7 Pengelolaan Akun Staf — `kelola_admin.php`
 - Hanya dapat diakses role `admin`.
-- Membuat akun staf dengan role `admin` atau `petugas`.
-- Menampilkan daftar akun staf yang sudah terdaftar.
+- Membuat akun admin tambahan.
+- Menampilkan daftar akun admin yang sudah terdaftar.
 
 ### 2.8 Pembuatan Surat PDF — `surat_pdf.php`, `surat_pdf_lib.php`
 - Memeriksa login, kepemilikan pengajuan, role, dan status pengajuan.

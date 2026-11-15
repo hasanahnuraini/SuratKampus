@@ -26,7 +26,7 @@ $user = $_SESSION['user'] ?? null;
     <?php if ($user): ?>
       <a href="<?= e(role_home($user['role'] ?? '')) ?>">Dashboard</a>
       <?php if (($user['role'] ?? '') === 'mahasiswa'): ?><a href="ajukan.php">Ajukan Surat</a><?php endif; ?>
-      <?php if (is_staff_role($user['role'] ?? '')): ?><a href="admin.php">Kelola Pengajuan</a><?php endif; ?>
+      <?php if (is_admin_role($user['role'] ?? '')): ?><a href="admin.php">Kelola Pengajuan</a><?php endif; ?>
       <?php if (($user['role'] ?? '') === 'admin'): ?><a href="kelola_admin.php">Kelola Admin</a><?php endif; ?>
       <span class="nav-user"><?= e($user['nama']) ?></span>
       <a class="nav-logout" href="logout.php">Keluar</a>

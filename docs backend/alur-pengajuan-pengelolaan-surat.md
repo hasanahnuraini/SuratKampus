@@ -2,7 +2,7 @@
 
 ## 1. Gambaran Umum
 
-Proses pengajuan surat melibatkan mahasiswa sebagai pemohon dan admin/petugas sebagai pemeriksa. File utama yang terlibat adalah `ajukan.php`, `dashboard.php`, `admin.php`, `edit_pengajuan.php`, `surat_pdf.php`, dan `surat_pdf_lib.php`.
+Proses pengajuan surat melibatkan mahasiswa sebagai pemohon dan admin sebagai pemeriksa. File utama yang terlibat adalah `ajukan.php`, `dashboard.php`, `admin.php`, `edit_pengajuan.php`, `surat_pdf.php`, dan `surat_pdf_lib.php`.
 
 ## 2. Pengajuan Surat oleh Mahasiswa
 
@@ -26,10 +26,10 @@ Tindakan yang ditampilkan mengikuti status:
 
 ## 4. Pemeriksaan dan Pengelolaan oleh Admin/Petugas
 
-1. Admin atau petugas login dan membuka `admin.php`.
+1. Admin atau admin login dan membuka `admin.php`.
 2. Sistem menampilkan daftar pengajuan beserta informasi mahasiswa.
 3. Daftar dapat difilter berdasarkan status.
-4. Pengajuan petugas dibatasi berdasarkan program studi petugas; admin dapat mengelola pengajuan sesuai cakupan yang diterapkan aplikasi.
+4. Pengajuan admin dibatasi berdasarkan program studi admin; admin dapat mengelola pengajuan sesuai cakupan yang diterapkan aplikasi.
 5. Staf memilih status baru dan dapat menambahkan catatan untuk mahasiswa.
 6. Backend memverifikasi CSRF, memvalidasi status terhadap daftar status yang diperbolehkan, lalu memperbarui status dan catatan pada data pengajuan.
 

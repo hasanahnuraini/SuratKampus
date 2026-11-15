@@ -2,7 +2,7 @@
 
 ## 1. Gambaran Umum
 Frontend SuratKampus merupakan bagian antarmuka pengguna yang digunakan untuk mengakses layanan pengajuan surat administrasi kampus secara digital.
-Frontend dirancang agar mahasiswa dapat melakukan pengajuan surat, melihat riwayat pengajuan, memantau status permohonan, serta mengunduh surat yang telah selesai diproses. Selain itu, admin dan petugas dapat mengelola pengajuan surat sesuai dengan hak akses masing-masing.
+Frontend dirancang agar mahasiswa dapat melakukan pengajuan surat, melihat riwayat pengajuan, memantau status permohonan, serta mengunduh surat yang telah selesai diproses. Selain itu, admin dapat mengelola pengajuan surat sesuai dengan hak akses masing-masing.
 Pengembangan frontend menggunakan PHP Native, HTML, CSS, dan JavaScript.
 
 ## 2. Teknologi yang Digunakan
@@ -25,7 +25,7 @@ Komponen halaman:
 - Informasi fitur utama website.
 
 ### 3.2 Halaman Login (`login.php`)
-Halaman login digunakan oleh mahasiswa, admin, dan petugas untuk masuk ke dalam sistem menggunakan email dan kata sandi.
+Halaman login digunakan oleh mahasiswa dan admin untuk masuk ke dalam sistem menggunakan email dan kata sandi.
 Komponen halaman:
 - Form email.
 - Form kata sandi.
@@ -65,12 +65,12 @@ Formulir menampilkan kolom isian sesuai dengan jenis surat yang dipilih, seperti
 Mahasiswa juga dapat memasukkan data anggota kelompok apabila pengajuan dilakukan secara berkelompok.
 
 ### 3.6 Halaman Edit Pengajuan (`edit_pengajuan.php`)
-Halaman edit pengajuan digunakan mahasiswa untuk memperbaiki atau melengkapi data pengajuan yang telah diperiksa oleh admin atau petugas.
+Halaman edit pengajuan digunakan mahasiswa untuk memperbaiki atau melengkapi data pengajuan yang telah diperiksa oleh admin.
 Halaman ini digunakan ketika pengajuan memiliki status Diproses dan terdapat catatan perbaikan dari pihak administrasi.
 Setelah mahasiswa menyimpan perubahan, pengajuan akan kembali ke status Menunggu untuk diperiksa ulang.
 
 ### 3.7 Dashboard Admin dan Petugas (`admin.php`)
-Halaman ini digunakan admin dan petugas untuk mengelola pengajuan surat mahasiswa.
+Halaman ini digunakan admin untuk mengelola pengajuan surat mahasiswa.
 Komponen halaman:
 - Daftar pengajuan surat mahasiswa.
 - Informasi identitas pemohon.
@@ -79,18 +79,18 @@ Komponen halaman:
 - Kolom catatan admin.
 - Fitur perubahan status pengajuan.
 - Fitur pemeriksaan data pengajuan.
-Admin dan petugas hanya dapat mengelola pengajuan mahasiswa dari program studi yang sesuai dengan program studi akun mereka.
+Admin dan admin hanya dapat mengelola pengajuan mahasiswa dari program studi yang sesuai dengan program studi akun mereka.
 
 ### 3.8 Halaman Login Admin (`admin_login.php`)
-File `admin_login.php` merupakan halaman khusus yang tersedia dalam struktur proyek. Namun, alur login utama untuk mahasiswa, admin, dan petugas menggunakan `login.php`.
+File `admin_login.php` merupakan halaman khusus yang tersedia dalam struktur proyek. Namun, alur login utama untuk mahasiswa dan admin menggunakan `login.php`.
 
 ### 3.9 Halaman Kelola Admin (`kelola_admin.php`)
 Halaman ini digunakan admin untuk mengelola akun yang memiliki hak akses administrasi.
 Komponen halaman:
-- Form penambahan akun admin atau petugas.
+- Form penambahan akun admin.
 - Informasi nama dan email.
 - Informasi program studi.
-- Daftar akun admin dan petugas yang terdaftar.
+- Daftar akun admin yang terdaftar.
 
 ### 3.10 Halaman Unduh Surat (`surat_pdf.php`)
 Halaman ini berfungsi untuk menghasilkan dan mengunduh surat dalam format PDF.
@@ -115,8 +115,8 @@ Secara umum, alur penggunaan frontend SuratKampus adalah sebagai berikut:
 3. Setelah login, mahasiswa diarahkan ke dashboard mahasiswa.
 4. Mahasiswa mengisi formulir pengajuan surat.
 5. Mahasiswa dapat melihat riwayat dan status pengajuan melalui dashboard.
-6. Admin atau petugas login dan memeriksa pengajuan mahasiswa melalui dashboard administrasi.
-7. Admin atau petugas dapat memperbarui status pengajuan serta memberikan catatan perbaikan.
+6. Admin atau admin login dan memeriksa pengajuan mahasiswa melalui dashboard administrasi.
+7. Admin atau admin dapat memperbarui status pengajuan serta memberikan catatan perbaikan.
 8. Mahasiswa melengkapi data apabila terdapat permintaan perbaikan.
 9. Setelah pengajuan dinyatakan selesai, mahasiswa dapat mengunduh surat dalam format PDF.
 
@@ -126,9 +126,9 @@ Frontend SuratKampus memiliki tiga jenis pengguna dengan hak akses yang berbeda.
 |  Pengguna   |                                                              Hak Akses                                                                  |
 |-------------|-----------------------------------------------------------------------------------------------------------------------------------------|
 | Mahasiswa   | Registrasi, login, mengajukan surat, melihat riwayat, memperbaiki pengajuan, dan mengunduh surat.                                       |
-| Admin       | Login, mengelola pengajuan mahasiswa sesuai program studi, mengubah status, memberikan catatan, serta mengelola akun admin dan petugas. |
+| Admin       | Login, mengelola pengajuan mahasiswa sesuai program studi, mengubah status, memberikan catatan, serta mengelola akun admin. |
 | Petugas     | Login, melihat dan mengelola pengajuan mahasiswa sesuai program studi, mengubah status, serta memberikan catatan.                       |
 
 ## 7. Kesimpulan
 Frontend SuratKampus dikembangkan menggunakan PHP Native dengan dukungan HTML, CSS, dan JavaScript. Struktur frontend terdiri dari halaman beranda, autentikasi pengguna, dashboard mahasiswa, formulir pengajuan surat, dashboard administrasi, serta halaman pengunduhan surat PDF.
-Setiap halaman memiliki fungsi yang saling terhubung untuk mendukung proses pelayanan administrasi surat kampus secara digital, mulai dari pengajuan oleh mahasiswa hingga penyelesaian oleh admin atau petugas.
+Setiap halaman memiliki fungsi yang saling terhubung untuk mendukung proses pelayanan administrasi surat kampus secara digital, mulai dari pengajuan oleh mahasiswa hingga penyelesaian oleh admin.

@@ -4,10 +4,10 @@ Prototipe web PHP Native + MySQL untuk pengajuan surat administrasi mahasiswa. F
 
 ## Fitur
 - Registrasi dan login mahasiswa melalui `login.php`.
-- Satu halaman login (`login.php`) untuk mahasiswa dan admin/petugas; setelah masuk, pengguna diarahkan otomatis sesuai role.
+- Satu halaman login (`login.php`) untuk mahasiswa dan admin; setelah masuk, pengguna diarahkan otomatis sesuai role.
 - Form pengajuan surat dan riwayat status.
 - Jenis surat: Observasi Mata Kuliah/Mini Riset, Magang Mandiri, PKLI, dan Observasi Skripsi.
-- Panel admin/petugas untuk melihat pengajuan, memfilter status, menambahkan catatan, dan mengubah status.
+- Panel admin untuk melihat pengajuan, memfilter status, menambahkan catatan, dan mengubah status.
 - Unduh PDF setelah status pengajuan menjadi `Selesai`.
 - Prepared statements, password hashing, session, dan CSRF token.
 
@@ -34,21 +34,15 @@ FROM users
 WHERE email = 'email-admin-anda@example.com';
 ```
 
-Untuk membuat akun sebagai petugas, gunakan `SET role = 'petugas'`. Admin dan petugas sama-sama dapat mengelola pengajuan.
+Semua akun dengan role `admin` dapat mengelola pengajuan. Admin tambahan dapat dibuat melalui menu **Kelola Admin**.
 
 ## Jika database `kampus_surat` sudah ada
-Jangan impor ulang untuk database yang berisi data penting tanpa membuat cadangan terlebih dahulu. Jika tabel `users` sudah memakai kolom `nama`, `email`, `nim`, `prodi`, `password`, dan `role`, jalankan migrasi berikut agar role `petugas` dapat digunakan:
-
-```sql
-ALTER TABLE users
-MODIFY role ENUM('mahasiswa','admin','petugas')
-NOT NULL DEFAULT 'mahasiswa';
-```
+Jangan impor ulang untuk database yang berisi data penting tanpa membuat cadangan terlebih dahulu. Jika database lama masih menggunakan role `petugas`, buat cadangan database lalu jalankan `migrations/20261115_remove_petugas_role.sql`. Migrasi tersebut mengubah akun petugas yang sudah ada menjadi admin dan membatasi kolom role menjadi `mahasiswa` atau `admin`.
 
 Jika tabelmu masih memiliki kolom `nik` dan `alamat` dari proyek desa, jangan jalankan migrasi di atas saja; gunakan database baru dari `database.sql` atau sesuaikan skema setelah mencadangkan data.
 
 ## Tentang PDF surat
-PDF dibuat berdasarkan struktur contoh surat yang disertakan: surat observasi mini riset, observasi skripsi, dan PKLI. Surat Magang Mandiri mengikuti susunan surat PKLI dengan redaksi berbeda. Tata letak (kertas F4 612 x 936 pt, Times 12 pt, kop, tabel, tanda tangan) ada di `surat_pdf_lib.php` dan sudah diukur dari file contoh. Nomor urut surat sengaja dikosongkan seperti contoh (`/UN33.5.1/PG/tahun`) untuk diisi petugas; ubah `SURAT_NOMOR_URUT` bila ingin terisi otomatis. Nama/NIP penandatangan dan catatan draf (`SURAT_CATATAN_DRAF`) juga diatur di bagian atas file itu. Untuk database yang sudah ada, jalankan `upgrade_target_address.sql` agar alamat instansi bisa diisi dan dicetak.
+PDF dibuat berdasarkan struktur contoh surat yang disertakan: surat observasi mini riset, observasi skripsi, dan PKLI. Surat Magang Mandiri mengikuti susunan surat PKLI dengan redaksi berbeda. Tata letak (kertas F4 612 x 936 pt, Times 12 pt, kop, tabel, tanda tangan) ada di `surat_pdf_lib.php` dan sudah diukur dari file contoh. Nomor urut surat sengaja dikosongkan seperti contoh (`/UN33.5.1/PG/tahun`) untuk diisi admin; ubah `SURAT_NOMOR_URUT` bila ingin terisi otomatis. Nama/NIP penandatangan dan catatan draf (`SURAT_CATATAN_DRAF`) juga diatur di bagian atas file itu. Untuk database yang sudah ada, jalankan `upgrade_target_address.sql` agar alamat instansi bisa diisi dan dicetak.
 
 ## Catatan
 - Koneksi default XAMPP: host `localhost`, user `root`, password kosong. Sesuaikan di `config.php` bila konfigurasi MySQL berbeda.
@@ -71,9 +65,9 @@ Jangan mengimpor ulang `database.sql` ke database yang sudah berisi data penting
 - Tombol edit hanya tersedia untuk pemilik pengajuan dan hanya saat status `Diproses`.
 
 
-## Pengelolaan akun admin/petugas
+## Pengelolaan akun admin
 
-Pendaftaran publik di `register.php` hanya membuat akun mahasiswa. Untuk membuat akun admin pertama kali, buat akun mahasiswa lalu ubah rolenya satu kali melalui phpMyAdmin (tabel `users`, kolom `role`) menjadi `admin`, atau gunakan SQL UPDATE yang dijelaskan di bagian database. Setelah admin utama dapat login, gunakan menu **Kelola Admin** atau tombol **Tambah Admin / Petugas** di panel admin untuk membuat akun staf berikutnya. Halaman `kelola_admin.php` hanya dapat diakses oleh akun dengan role `admin`.
+Pendaftaran publik di `register.php` hanya membuat akun mahasiswa. Untuk membuat akun admin pertama kali, buat akun mahasiswa lalu ubah rolenya satu kali melalui phpMyAdmin (tabel `users`, kolom `role`) menjadi `admin`, atau gunakan SQL UPDATE yang dijelaskan di bagian database. Setelah admin utama dapat login, gunakan menu **Kelola Admin** atau tombol **Tambah Admin** di panel admin untuk membuat akun staf berikutnya. Halaman `kelola_admin.php` hanya dapat diakses oleh akun dengan role `admin`.
 
 
 ## Anggota kelompok pada pengajuan surat
@@ -84,4 +78,4 @@ Sebelum menggunakan fitur ini, buka phpMyAdmin, pilih database `kampus_surat`, t
 
 
 ## Pembagian surat per program studi
-Surat mahasiswa hanya tampil di dashboard admin/petugas dengan program studi yang sama. Pencocokan memakai teks prodi yang identik, sehingga `register.php` dan `kelola_admin.php` memakai dropdown dari satu daftar, `PRODI_LIST` di `config.php`. Edit daftar itu agar sesuai prodi kampus. Untuk akun yang sudah ada, jalankan `upgrade_normalisasi_prodi.sql` (sesuaikan dulu isinya dengan hasil langkah 1).
+Surat mahasiswa hanya tampil di dashboard admin dengan program studi yang sama. Pencocokan memakai teks prodi yang identik, sehingga `register.php` dan `kelola_admin.php` memakai dropdown dari satu daftar, `PRODI_LIST` di `config.php`. Edit daftar itu agar sesuai prodi kampus. Untuk akun yang sudah ada, jalankan `upgrade_normalisasi_prodi.sql` (sesuaikan dulu isinya dengan hasil langkah 1).
