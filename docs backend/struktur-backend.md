@@ -7,7 +7,7 @@ Teknologi: PHP Native, PDO, MySQL, session PHP, dan generator PDF internal.
 
 ## 1. Gambaran Umum
 
-Backend SuratKampus menangani registrasi dan login pengguna, pengajuan surat mahasiswa, pemeriksaan dan revisi oleh admin/petugas, serta pembuatan surat PDF ketika pengajuan selesai. Aplikasi menggunakan PHP Native dan akses database melalui PDO.
+Backend SuratKampus menangani registrasi dan login pengguna, pengajuan surat mahasiswa, pemeriksaan dan revisi oleh admin, serta pembuatan surat PDF ketika pengajuan selesai. Aplikasi menggunakan PHP Native dan akses database melalui PDO.
 
 ## 2. Struktur File Backend
 
@@ -21,9 +21,9 @@ Backend SuratKampus menangani registrasi dan login pengguna, pengajuan surat mah
 | `dashboard.php` | Dashboard mahasiswa; menampilkan pengajuan milik pengguna, ringkasan status, tautan revisi, dan unduhan PDF untuk surat selesai. |
 | `ajukan.php` | Form dan proses pembuatan pengajuan surat; menyimpan data pengajuan dan anggota tambahan bila ada. |
 | `edit_pengajuan.php` | Memuat pengajuan milik mahasiswa yang sedang login dan mengizinkan revisi hanya saat status `Diproses`; setelah disimpan status kembali `Menunggu`. |
-| `admin_login.php` | Halaman login staf/admin. |
-| `admin.php` | Halaman pengelolaan pengajuan untuk staf; akses staf dibatasi menurut role dan program studi. |
-| `kelola_admin.php` | Pengelolaan akun admin/petugas; halaman khusus role `admin`, membuat akun staf dan menampilkan daftar staf. |
+| `admin_login.php` | Halaman login admin. |
+| `admin.php` | Halaman pengelolaan pengajuan untuk admin; akses dibatasi menurut role dan program studi. |
+| `kelola_admin.php` | Pengelolaan akun admin; halaman khusus role `admin`, membuat akun admin dan menampilkan daftar admin. |
 | `surat_pdf.php` | Memeriksa akses dan status pengajuan, mengambil data anggota, lalu mengirim PDF sebagai unduhan. |
 | `surat_pdf_lib.php` | Library internal untuk menyusun layout dan output PDF, termasuk kop surat, alamat, tabel mahasiswa, tanda tangan, pemenggalan baris, dan objek PDF. |
 | `partials/header.php` | Komponen header/navigasi yang digunakan ulang pada halaman. |
@@ -57,10 +57,10 @@ Saat registrasi, akun publik dibuat dengan role `mahasiswa`. Password disimpan m
 | Role | Akses utama |
 |---|---|
 | `mahasiswa` | Membuat pengajuan, melihat pengajuan miliknya, memperbaiki pengajuan yang berstatus `Diproses`, dan mengunduh PDF yang berstatus `Selesai`. |
-| `petugas` | Menangani pengajuan sesuai cakupan program studi yang ditetapkan. |
-| `admin` | Mengelola pengajuan dan akun staf; halaman `kelola_admin.php` khusus admin. |
+| `admin` | Menangani pengajuan sesuai cakupan program studi yang ditetapkan. |
+| `admin` | Mengelola pengajuan dan akun admin; halaman `kelola_admin.php` khusus admin. |
 
-Pemeriksaan akses terpusat tersedia melalui `require_login()` dan `require_role()`. Fungsi `is_staff_role()` mengenali role `admin` dan `petugas`, sedangkan `role_home()` menentukan halaman tujuan berdasarkan role. Program studi staf diambil dari database melalui `current_staff_prodi()`.
+Pemeriksaan akses terpusat tersedia melalui `require_login()` dan `require_role()`. Fungsi `is_admin_role()` memeriksa role `admin`, sedangkan `role_home()` menentukan halaman tujuan berdasarkan role. Program studi admin diambil dari database melalui `current_admin_prodi()`.
 
 ## 5. Alur Pengajuan dan Pengelolaan Surat
 
@@ -72,10 +72,10 @@ Pemeriksaan akses terpusat tersedia melalui `require_login()` dan `require_role(
 4. Jika ada anggota tambahan, data disimpan ke `application_members`.
 5. Mahasiswa dapat melihat pengajuan melalui `dashboard.php`.
 
-### Pemeriksaan staf
+### Pemeriksaan admin
 
 1. Staf membuka halaman pengelolaan pengajuan.
-2. Pengajuan ditinjau sesuai program studi staf.
+2. Pengajuan ditinjau sesuai program studi admin.
 3. Staf dapat memperbarui status dan memberikan catatan.
 4. Status `Diproses` digunakan untuk meminta mahasiswa melengkapi atau memperbaiki data.
 5. Status `Selesai` menandakan surat siap diunduh. Status `Ditolak` juga ditampilkan pada dashboard mahasiswa.
@@ -91,7 +91,7 @@ Pemeriksaan akses terpusat tersedia melalui `require_login()` dan `require_role(
 
 1. Pengguna login membuka `surat_pdf.php` dengan ID pengajuan.
 2. Backend mengambil pengajuan beserta data pemilik.
-3. Mahasiswa hanya dapat mengakses pengajuan miliknya; staf mengikuti pemeriksaan role.
+3. Mahasiswa hanya dapat mengakses pengajuan miliknya; admin mengikuti pemeriksaan role.
 4. Unduhan ditolak jika status belum `Selesai` (HTTP 403).
 5. Data anggota diambil, `surat_pdf_lib.php` membangun dokumen, dan respons dikirim dengan `Content-Type: application/pdf`.
 
@@ -106,7 +106,7 @@ Pemeriksaan akses terpusat tersedia melalui `require_login()` dan `require_role(
 
 Berdasarkan query pada kode, aplikasi menggunakan tabel berikut:
 
-- `users` — akun pengguna dan staf, termasuk role serta program studi.
+- `users` — akun mahasiswa dan admin, termasuk role serta program studi.
 - `applications` — data utama pengajuan surat, status, catatan staf, dan waktu.
 - `application_members` — daftar anggota tambahan pada pengajuan.
 

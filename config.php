@@ -2,10 +2,10 @@
 declare(strict_types=1);
 session_start();
 
-$host = 'localhost';
-$db   = 'kampus_surat';
-$user = 'root';
-$pass = '';
+$host = getenv('DB_HOST') ?: 'localhost';
+$db   = getenv('DB_NAME') ?: 'kampus_surat';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASSWORD') ?: '';
 
 try {
     $pdo = new PDO(
@@ -34,13 +34,7 @@ function require_login(): void {
     }
 }
 
-/**
- * DAFTAR PROGRAM STUDI RESMI (satu-satunya sumber kebenaran).
- * Dipakai oleh register.php (mahasiswa) dan kelola_admin.php (admin).
- * Karena kedua sisi memilih dari daftar yang SAMA, teks prodi mahasiswa
- * dan admin dijamin identik, sehingga surat selalu masuk ke admin prodi yang tepat.
- * Sesuaikan isi daftar ini dengan prodi yang benar-benar ada di kampus Anda.
- */
+
 const PRODI_LIST = [
     'Pendidikan TIK',
     'Pendidikan Tata Boga',
@@ -64,11 +58,8 @@ function prodi_options_html(string $selected = ''): string {
     return $html;
 }
 
-/**
- * Prodi admin/petugas yang sedang login, dibaca langsung dari database
- * (bukan dari session) agar perubahan prodi langsung berlaku.
- */
-function current_staff_prodi(PDO $pdo): string {
+
+function current_admin_prodi(PDO $pdo): string {
     $stmt = $pdo->prepare('SELECT prodi FROM users WHERE id = ?');
     $stmt->execute([$_SESSION['user']['id'] ?? 0]);
     $prodi = trim((string) $stmt->fetchColumn());
@@ -76,12 +67,12 @@ function current_staff_prodi(PDO $pdo): string {
     return $prodi;
 }
 
-function is_staff_role(?string $role): bool {
-    return in_array($role, ['admin', 'petugas'], true);
+function is_admin_role(?string $role): bool {
+    return $role === 'admin';
 }
 
 function role_home(?string $role): string {
-    return is_staff_role($role) ? 'admin.php' : 'dashboard.php';
+    return is_admin_role($role) ? 'admin.php' : 'dashboard.php';
 }
 
 function require_role($role): void {

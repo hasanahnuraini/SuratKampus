@@ -25,8 +25,8 @@ if (!$applicationId || $applicationId <= 0) {
 try {
     $pdo->beginTransaction();
 
-    // Pastikan pengajuan milik mahasiswa yang login
-    // dan statusnya masih Menunggu.
+
+
     $stmt = $pdo->prepare(
         "SELECT id FROM applications
             WHERE id = ?
@@ -51,14 +51,14 @@ try {
         exit;
     }
 
-    // Hapus anggota kelompok terlebih dahulu.
+
     $stmt = $pdo->prepare(
         'DELETE FROM application_members WHERE application_id = ?'
     );
 
     $stmt->execute([$applicationId]);
 
-    // Hapus pengajuan utama.
+
     $stmt = $pdo->prepare(
         "DELETE FROM applications
             WHERE id = ?

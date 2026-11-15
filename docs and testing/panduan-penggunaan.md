@@ -18,7 +18,7 @@ Langkah-langkah:
 3. Masukkan kata sandi.
 4. Klik tombol **Masuk**.
 5. Sistem akan mengarahkan pengguna sesuai dengan role akun.
-Mahasiswa akan diarahkan ke halaman mahasiswa, sedangkan admin atau petugas akan diarahkan ke halaman pengelolaan pengajuan.
+Mahasiswa akan diarahkan ke halaman mahasiswa, sedangkan admin akan diarahkan ke halaman pengelolaan pengajuan.
 
 ## 3. Mengajukan Surat
 Mahasiswa dapat mengajukan surat administrasi melalui sistem.
@@ -35,13 +35,13 @@ Jenis surat yang tersedia meliputi surat observasi mata kuliah/mini riset, magan
 ## 4. Melihat Status Pengajuan
 Mahasiswa dapat memantau perkembangan pengajuan surat melalui dashboard.
 Status pengajuan dapat berupa:
-- **Menunggu**: pengajuan menunggu pemeriksaan admin/petugas.
+- **Menunggu**: pengajuan menunggu pemeriksaan admin.
 - **Diproses**: pengajuan sedang diperiksa atau memerlukan perbaikan.
 - **Selesai**: pengajuan telah selesai dan surat dapat diunduh.
 - **Ditolak**: pengajuan tidak disetujui.
 
 ## 5. Memperbaiki Pengajuan
-Jika admin/petugas meminta perbaikan, mahasiswa dapat memperbaiki data pengajuan.
+Jika admin meminta perbaikan, mahasiswa dapat memperbaiki data pengajuan.
 Langkah-langkah:
 1. Login sebagai mahasiswa.
 2. Buka dashboard.
@@ -53,9 +53,9 @@ Langkah-langkah:
 8. Pengajuan akan kembali berstatus **Menunggu** untuk diperiksa kembali.
 
 ## 6. Pengelolaan Pengajuan oleh Admin/Petugas
-Admin atau petugas dapat mengelola pengajuan surat mahasiswa.
+Admin atau admin dapat mengelola pengajuan surat mahasiswa.
 Langkah-langkah:
-1. Login menggunakan akun admin atau petugas.
+1. Login menggunakan akun admin.
 2. Buka halaman pengelolaan pengajuan.
 3. Lihat daftar pengajuan mahasiswa.
 4. Periksa data pengajuan.

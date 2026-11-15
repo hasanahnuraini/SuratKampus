@@ -38,21 +38,21 @@ Jika kredensial tidak cocok, pengguna tidak dibuatkan session login dan halaman 
 | Role | Hak akses berdasarkan implementasi |
 |---|---|
 | `mahasiswa` | Membuat pengajuan melalui `ajukan.php`, melihat pengajuan sendiri melalui `dashboard.php`, mengedit pengajuan sendiri saat status `Diproses`, dan mengunduh PDF pengajuan sendiri saat status `Selesai`. |
-| `petugas` | Mengakses `admin.php` dan menangani pengajuan yang sesuai dengan program studi petugas. |
-| `admin` | Mengakses pengelolaan pengajuan dan halaman `kelola_admin.php` untuk membuat serta melihat akun staf. |
+| `admin` | Mengakses `admin.php` dan menangani pengajuan yang sesuai dengan program studi admin. |
+| `admin` | Mengakses pengelolaan pengajuan dan halaman `kelola_admin.php` untuk membuat serta melihat akun admin. |
 
 ## 6. Pemeriksaan Hak Akses
 
 Fungsi yang tersedia di `config.php`:
 - `require_login()`: memastikan pengguna sudah login.
 - `require_role($role)`: memastikan pengguna memiliki role yang diizinkan; jika tidak, pengguna diarahkan ke halaman sesuai role.
-- `is_staff_role($role)`: mengenali role staf, yaitu `admin` dan `petugas`.
+- `is_admin_role($role)`: memeriksa apakah role pengguna adalah `admin`.
 - `role_home($role)`: menentukan halaman tujuan berdasarkan role.
-- `current_staff_prodi($pdo)`: mengambil program studi staf dari data pengguna di database.
+- `current_admin_prodi($pdo)`: mengambil program studi admin dari data pengguna di database.
 
 Penerapan pada halaman:
 - `ajukan.php` dan `edit_pengajuan.php` menggunakan `require_role('mahasiswa')`.
-- `admin.php` menggunakan `require_role(['admin', 'petugas'])`.
+- `admin.php` menggunakan `require_role('admin')`.
 - `kelola_admin.php` menggunakan `require_role('admin')`.
 - `dashboard.php` dan `surat_pdf.php` mewajibkan pengguna login.
 

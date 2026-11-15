@@ -26,7 +26,7 @@ Teknologi yang digunakan dalam pengelolaan database SuratKampus adalah:
 Database SuratKampus memiliki tiga tabel utama, yaitu `users`, `applications`, dan `application_members`.
 
 ### 4.1 Tabel Users
-Tabel `users` digunakan untuk menyimpan data akun pengguna yang dapat mengakses website SuratKampus, yaitu mahasiswa, admin, dan petugas.
+Tabel `users` digunakan untuk menyimpan data akun pengguna yang dapat mengakses website SuratKampus, yaitu mahasiswa dan admin.
 | Nama Kolom | Tipe Data | Keterangan |
 |---|---|---|
 | id | INT UNSIGNED | Primary Key, identitas pengguna, Auto Increment |
@@ -35,12 +35,12 @@ Tabel `users` digunakan untuk menyimpan data akun pengguna yang dapat mengakses 
 | nim | VARCHAR(30) | Nomor Induk Mahasiswa, bersifat UNIQUE |
 | prodi | VARCHAR(190) | Program studi pengguna |
 | password | VARCHAR(255) | Kata sandi yang tersimpan dalam bentuk hash |
-| role | ENUM | Hak akses: mahasiswa, admin, petugas |
+| role | ENUM | Hak akses: mahasiswa, admin |
 | created_at | TIMESTAMP | Waktu pembuatan akun |
 
 **Fungsi tabel:**
 - Menyimpan informasi akun pengguna.
-- Mengelola identitas mahasiswa, admin, dan petugas.
+- Mengelola identitas mahasiswa dan admin.
 - Menentukan hak akses pengguna berdasarkan role.
 - Menjadi sumber data pengguna yang melakukan pengajuan surat.
 
@@ -65,7 +65,7 @@ Tabel `applications` digunakan untuk menyimpan seluruh data pengajuan surat yang
 | activity_end | DATE | Tanggal selesai kegiatan |
 | research_title | VARCHAR(500) | Judul penelitian |
 | status | ENUM | Status pengajuan surat |
-| staff_note | VARCHAR(500) | Catatan dari admin atau petugas |
+| staff_note | VARCHAR(500) | Catatan dari admin |
 | created_at | TIMESTAMP | Waktu pengajuan dibuat |
 | updated_at | TIMESTAMP | Waktu terakhir data diperbarui |
 
@@ -79,7 +79,7 @@ Status pengajuan memiliki empat pilihan:
 - Menyimpan data pengajuan surat mahasiswa.
 - Menyimpan informasi tujuan dan keperluan surat.
 - Menyimpan status proses pengajuan.
-- Menyimpan catatan perbaikan dari admin atau petugas.
+- Menyimpan catatan perbaikan dari admin.
 - Menjadi sumber data untuk proses pembuatan surat PDF.
 
 **Primary Key:** `id`

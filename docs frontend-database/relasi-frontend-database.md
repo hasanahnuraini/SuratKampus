@@ -26,7 +26,7 @@ Berikut hubungan antara halaman frontend SuratKampus dengan tabel database yang 
 | Pengajuan Surat (`ajukan.php`) | `applications`, `application_members` | Menyimpan data pengajuan dan anggota kelompok. |
 | Edit Pengajuan (`edit_pengajuan.php`) | `applications`, `application_members` | Memperbarui data pengajuan dan anggota kelompok. |
 | Dashboard Admin (`admin.php`) | `users`, `applications` | Menampilkan dan mengelola data pengajuan mahasiswa. |
-| Kelola Admin (`kelola_admin.php`) | `users` | Mengelola akun admin dan petugas. |
+| Kelola Admin (`kelola_admin.php`) | `users` | Mengelola akun admin. |
 | Unduh Surat (`surat_pdf.php`) | `users`, `applications`, `application_members` | Mengambil data untuk menghasilkan dokumen surat PDF. |
 
 ## 4. Proses Pengolahan Data
@@ -41,7 +41,7 @@ Data utama pengajuan disimpan pada tabel `applications`, sedangkan data anggota 
 Kedua tabel tersebut dihubungkan menggunakan kolom `application_id`.
 
 ### 4.3 Proses Pemeriksaan Pengajuan
-Admin atau petugas mengakses halaman `admin.php` untuk melihat dan memeriksa data pengajuan.
+Admin atau admin mengakses halaman `admin.php` untuk melihat dan memeriksa data pengajuan.
 Perubahan status dan catatan pemeriksaan disimpan pada tabel `applications`.
 Status pengajuan meliputi:
 - Menunggu.
