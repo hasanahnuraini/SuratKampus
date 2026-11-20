@@ -1,29 +1,24 @@
 <?php
-/**
- * Pembuat PDF surat resmi Fakultas Teknik UNIMED (tanpa library tambahan).
- * Tata letak diukur langsung dari contoh di folder referensi_surat/:
- * kertas F4/Folio 612 x 936 pt, font Times 12 pt, teks rata kiri-kanan,
- * tabel mahasiswa 4 kolom (No, Nama, NIM, Prodi), tanda tangan a.n Dekan.
- */
 
-// ---- Pengaturan yang mungkin perlu diubah admin ----
+
+
 const SURAT_PEJABAT_JABATAN = ['a.n Dekan,', 'Wakil Dekan Bidang Akademik'];
 const SURAT_PEJABAT_NAMA    = 'Prof. Dr. Muhammad Amin, S.T., M.Pd.';
 const SURAT_PEJABAT_NIP     = 'NIP. 196801011994031003';
-// Nomor urut surat dikosongkan seperti pada contoh (diisi manual oleh petugas
-// sebelum dicetak). Isi mis. '123' agar tercetak 123/UN33.5.1/PG/2026.
+
+
 const SURAT_NOMOR_URUT      = '';
-// Catatan "draf" di kaki halaman. Surat referensi tidak memilikinya.
+
 const SURAT_CATATAN_DRAF    = false;
 
 const SP_W = 612.0;
 const SP_H = 936.0;
 const SP_LEFT = 72.0;
-const SP_RIGHT = 539.65;    // tepi kanan teks rata kiri-kanan
-const SP_LIMIT = 864.0;     // baris dasar terbawah sebelum pindah halaman
-const SP_TOP_BASE = 83.0;   // baris dasar pertama pada halaman lanjutan
+const SP_RIGHT = 539.65;
+const SP_LIMIT = 864.0;
+const SP_TOP_BASE = 83.0;
 const SP_LEADING = 15.87;
-const SP_PARA_GAP = 27.87;  // 15.87 + spasi paragraf 12 pt
+const SP_PARA_GAP = 27.87;
 
 final class SuratPdf
 {
@@ -34,7 +29,7 @@ final class SuratPdf
 
     public function __construct(private string $logo, private int $logoCh = 3) {}
 
-    // ---------- Metrik font Times-Roman (F1) dan Times-Bold (F2), satuan 1/1000 em ----------
+
     private static function widths(): array
     {
         if (self::$W !== null) return self::$W;
@@ -79,7 +74,7 @@ final class SuratPdf
         return str_replace(['\\', '(', ')'], ['\\\\', '\\(', '\\)'], self::enc($s));
     }
 
-    // ---------- Primitif gambar ----------
+
     private function cmd(string $c): void { $this->pages[$this->p][] = $c; }
     private function f(float $v): string { return rtrim(rtrim(number_format($v, 2, '.', ''), '0'), '.') ?: '0'; }
 
@@ -99,8 +94,8 @@ final class SuratPdf
         $this->cmd("$rgb RG " . $this->f($w) . ' w ' . $this->f($x1) . ' ' . $this->f(SP_H - $y1) . ' m ' . $this->f($x2) . ' ' . $this->f(SP_H - $y2) . ' l S');
     }
 
-    // ---------- Pemecah baris ----------
-    /** Pecah teks (dengan **tebal**) menjadi kata; setiap kata = daftar [teks, font]. */
+
+
     private function words(string $text): array
     {
         $words = []; $cur = [];
@@ -121,7 +116,7 @@ final class SuratPdf
         $sum = 0; foreach ($w as [$t, $f]) $sum += $this->width($t, $f, $size); return $sum;
     }
 
-    /** @return array<int, array{words: array, natural: float}> */
+
     private function breakLines(string $text, float $maxWidth, float $size = 12): array
     {
         $space = 0.25 * $size; $lines = []; $cur = []; $curW = 0.0;
@@ -136,7 +131,7 @@ final class SuratPdf
         return $lines ?: [['words' => [], 'natural' => 0.0]];
     }
 
-    /** Pecah teks polos menjadi baris-baris string (untuk sel tabel dan nilai berlabel). */
+
     public function wrapPlain(string $text, float $maxWidth, float $size = 12): array
     {
         $out = [];
@@ -148,17 +143,17 @@ final class SuratPdf
         return $out ?: [''];
     }
 
-    // ---------- Alur halaman ----------
+
     private function newPage(): void { $this->pages[] = []; $this->p++; $this->y = SP_TOP_BASE; }
 
-    /** Majukan baris dasar; pindah halaman bila melewati batas. Mengembalikan true bila pindah halaman. */
+
     private function advance(float $gap): bool
     {
         if ($this->y + $gap > SP_LIMIT) { $this->newPage(); return true; }
         $this->y += $gap; return false;
     }
 
-    /** Paragraf rata kiri-kanan (kalimat terakhir rata kiri). Dukung **tebal**. */
+
     public function para(string $text, float $gap = SP_PARA_GAP, float $x = SP_LEFT, float $right = SP_RIGHT): void
     {
         $lines = $this->breakLines($text, $right - $x);
@@ -182,7 +177,7 @@ final class SuratPdf
         }
     }
 
-    /** Baris berlabel "Label : nilai" dengan nilai yang dibungkus. */
+
     public function labelValue(string $label, string $value, float $gap = SP_LEADING, float $labelX = SP_LEFT, float $colonX = 185.0, float $valueX = 198.0): void
     {
         $lines = $this->wrapPlain($value === '' ? '-' : $value, SP_RIGHT - $valueX);
@@ -193,11 +188,11 @@ final class SuratPdf
         }
     }
 
-    // ---------- Kop surat ----------
+
     public function letterhead(): void
     {
         $this->cmd('q 87 0 0 84.75 53.25 ' . $this->f(SP_H - 120.75) . ' cm /Im1 Do Q');
-        // Teks kop selalu sama, jadi posisinya dikunci persis seperti pada surat referensi.
+
         $this->text(177.26, 49.07, 'KEMENTERIAN PENDIDIKAN TINGGI, SAINS,', 14);
         $this->text(259.17, 65.17, 'DAN TEKNOLOGI', 14);
         $this->text(216.0, 81.27, 'UNIVERSITAS NEGERI MEDAN', 14);
@@ -210,7 +205,7 @@ final class SuratPdf
         $this->line(65.3, 150.8, 555.7, 150.8, 1.89);
     }
 
-    /** Blok Nomor / Lamp. / Hal / Yth. / di Tempat. */
+
     public function addressBlock(string $dateText, string $nomor, string $subject, string $recipient, string $address): void
     {
         $this->text(77.25, 196.06, 'Nomor'); $this->text(148.5, 196.06, ':');
@@ -227,10 +222,10 @@ final class SuratPdf
         foreach ($addr as $i => $ln) { $y += $i === 0 ? 16.78 : 13.79; $this->text(162.75, $y, $ln); }
         $y += $addr ? 17.94 : 16.78; $this->text(162.75, $y, 'di');
         $y += 13.8;                  $this->text(162.75, $y, 'Tempat');
-        $this->y = $y + 26.22 - SP_PARA_GAP;   // paragraf pertama jatuh 26,22 pt di bawah "Tempat"
+        $this->y = $y + 26.22 - SP_PARA_GAP;
     }
 
-    // ---------- Tabel mahasiswa ----------
+
     public function studentTable(array $students, float $gap = 20.4): void
     {
         $cols = [72.4, 102.4, 340.4, 420.6, 541.9];
@@ -263,7 +258,7 @@ final class SuratPdf
         $this->y = $cur;
     }
 
-    // ---------- Tanda tangan ----------
+
     public function signature(): void
     {
         if ($this->y + 45.53 + 82.8 > SP_LIMIT) { $this->newPage(); $sy = $this->y; }
@@ -275,7 +270,7 @@ final class SuratPdf
         $this->y = $sy + 96.6;
     }
 
-    // ---------- Rakit file PDF ----------
+
     public function output(string $logoPath): string
     {
         if (SURAT_CATATAN_DRAF) {
@@ -313,9 +308,9 @@ final class SuratPdf
     }
 }
 
-// ============================================================================
-// Isi surat per jenis
-// ============================================================================
+
+
+
 
 function surat_tanggal(?string $ts): string
 {
@@ -324,7 +319,7 @@ function surat_tanggal(?string $ts): string
     return date('j', $t) . ' ' . $bulan[(int)date('n', $t)] . ' ' . date('Y', $t);
 }
 
-/** Lama kegiatan dalam bulan, mis. "1 (satu) bulan"; default 1 bulan sesuai contoh surat. */
+
 function surat_lama_kegiatan(?string $start, ?string $end): string
 {
     $kata = [1=>'satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas','dua belas'];
@@ -334,10 +329,7 @@ function surat_lama_kegiatan(?string $start, ?string $end): string
     return isset($kata[$m]) ? "$m ({$kata[$m]}) bulan" : "$m bulan";
 }
 
-/**
- * @param array $a        baris pengajuan + nama/nim/prodi pemohon
- * @param array $members  anggota kelompok [nama, nim, prodi]
- */
+
 function surat_build(array $a, array $members, string $logoPath): string
 {
     $type = (string)($a['letter_type'] ?? '');
